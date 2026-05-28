@@ -3,6 +3,8 @@ import { MetadataRoute } from 'next'
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://novaflow.shop'
 
+export const dynamic = 'force-dynamic'
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const defaultFreq = 'weekly' as const
 
