@@ -9,7 +9,7 @@ import CartDrawer from '@/components/cart/CartDrawer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'NovaFlow - Digital Products for Creators',
+  title: 'NovaFlow Shop - Digital Products for Creators',
   description: 'Notion templates, automation workflows, Canva packs, and Lightroom presets',
 }
 
