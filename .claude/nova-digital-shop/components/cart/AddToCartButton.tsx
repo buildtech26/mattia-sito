@@ -17,10 +17,10 @@ export default function AddToCartButton({ variantId }: { variantId: string }) {
     <button
       onClick={handleClick}
       disabled={loading}
-      className={`w-full py-3 px-6 rounded-lg font-semibold text-white transition ${
+      className={`w-full py-3 px-6 rounded-2xl font-semibold text-white transition ${
         added
           ? 'bg-green-600 hover:bg-green-700'
-          : 'bg-blue-600 hover:bg-blue-700'
+          : 'bg-[#fa5d00] hover:bg-[#e05200]'
       } disabled:opacity-50 disabled:cursor-not-allowed`}
     >
       {loading ? 'Adding...' : added ? 'Added!' : 'Add to Cart'}

@@ -44,7 +44,7 @@ export default function CartDrawer() {
             <Link
               href="/products"
               onClick={() => setCartOpen(false)}
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-[#fa5d00] hover:text-[#e05200] font-medium"
             >
               Browse Products
             </Link>
@@ -68,7 +68,7 @@ export default function CartDrawer() {
                     <Link
                       href={`/products/${node.merchandise.product.handle}`}
                       onClick={() => setCartOpen(false)}
-                      className="font-medium text-gray-900 hover:text-blue-600 transition line-clamp-1"
+                      className="font-medium text-gray-900 hover:text-[#fa5d00] transition line-clamp-1"
                     >
                       {node.merchandise.product.title}
                     </Link>
@@ -128,7 +128,7 @@ export default function CartDrawer() {
               </p>
               <a
                 href={cart?.checkoutUrl ?? '#'}
-                className="block w-full text-center bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+                className="block w-full text-center bg-[#fa5d00] text-white py-3 rounded-2xl font-semibold hover:bg-[#e05200] transition"
               >
                 Checkout
               </a>

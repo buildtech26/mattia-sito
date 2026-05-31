@@ -57,6 +57,7 @@ export const GET_PRODUCT = `
     product(handle: $handle) {
       title
       description
+      productType
       images(first: 10) {
         edges {
           node {
