@@ -1,64 +1,112 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 import { shopifyClient, GET_PRODUCTS, GET_COLLECTIONS } from '@/lib/shopify'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'All Digital Products - Notion, Canva, Make & Lightroom | NovaFlow',
+  description: 'Browse 10+ premium digital products: Notion templates, Canva design kits, Make automation workflows, and Lightroom presets. Find the perfect productivity tool for your workflow.',
+  openGraph: {
+    title: 'All Digital Products - NovaFlow',
+    description: 'Premium Notion, Canva, Make, and Lightroom products for creators.',
+    type: 'website',
+  },
+}
+
+const CATEGORY_ICONS: Record<string, string> = {
+  notion: '📓',
+  canva: '🎨',
+  automation: '⚡',
+  lightroom: '📸',
+}
 
 export default async function ProductsPage() {
   const products = await shopifyClient.request(GET_PRODUCTS, { first: 50 })
   const collections = await shopifyClient.request(GET_COLLECTIONS)
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold text-gray-900 mb-8">All Products</h1>
-
-      {/* Filter by Collection */}
-      <div className="mb-8">
-        <div className="flex flex-wrap gap-2">
-          <span className="text-sm font-medium text-gray-700 mr-4 self-center">
-            Filter:
-          </span>
-          {collections.collections.edges.map(({ node }: { node: any }) => (
-            <Link
-              key={node.handle}
-              href={`/collections/${node.handle}`}
-              className="px-4 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-            >
-              {node.title}
-            </Link>
-          ))}
+    <>
+      {/* Page Banner */}
+      <section className="page-banner">
+        <div className="content-wrapper">
+          <h1>All Products</h1>
+          <p>Browse our collection of premium digital products for creators and small businesses.</p>
         </div>
-      </div>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.products.edges.map(({ node }: { node: any }) => (
-          <Link
-            key={node.handle}
-            href={`/products/${node.handle}`}
-            className="group block border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition"
-          >
-            <div className="aspect-video relative bg-gray-100">
-              {node.images.edges[0] && (
-                <Image
-                  src={node.images.edges[0].node.url}
-                  alt={node.images.edges[0].node.altText || node.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform"
-                />
-              )}
+      <section style={{ padding: '48px 0' }}>
+        <div className="content-wrapper">
+          {/* Filter by Collection */}
+          <div className="feature-grid-header" style={{ justifyContent: 'flex-start', marginBottom: 32 }}>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              <Link
+                href="/products"
+                className="ss-tab is-active"
+                style={{ textDecoration: 'none' }}
+              >
+                All
+              </Link>
+              {collections.collections.edges.map(({ node }: { node: any }) => (
+                <Link
+                  key={node.handle}
+                  href={`/collections/${node.handle}`}
+                  className="ss-tab"
+                  style={{ textDecoration: 'none' }}
+                >
+                  {CATEGORY_ICONS[node.handle] || '📦'} {node.title}
+                </Link>
+              ))}
             </div>
-            <div className="p-4">
-              <h3 className="font-semibold text-gray-900 mb-2">{node.title}</h3>
-              <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                {node.description}
-              </p>
-              <p className="text-blue-600 font-bold">
-                From {node.variants.edges[0].node.price.amount} €
-              </p>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
+          </div>
+
+          {/* Products Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 24 }}>
+            {products.products.edges.map(({ node }: { node: any }, i: number) => (
+              <Link
+                key={node.handle}
+                href={`/products/${node.handle}`}
+                className="full-card-link"
+              >
+                <div className="feature-block" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{
+                    aspectRatio: '16/9',
+                    background: 'linear-gradient(135deg, #fff8f1, #ffe8d6)',
+                    borderRadius: 12,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 48,
+                    marginBottom: 16,
+                  }}>
+                    {node.images.edges[0] ? (
+                      <img
+                        src={node.images.edges[0].node.url}
+                        alt={node.images.edges[0].node.altText || node.title}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 12 }}
+                      />
+                    ) : (
+                      CATEGORY_ICONS[node.productType?.toLowerCase().split(' ')[0]] || '📦'
+                    )}
+                  </div>
+                  <div className="feature-header" style={{ marginBottom: 8 }}>
+                    <h3 style={{ fontSize: 16 }}>{node.title}</h3>
+                  </div>
+                  <p className="feature-body" style={{ flex: 1, fontSize: 13 }}>
+                    {node.description?.replace(/<[^>]*>/g, '').slice(0, 120)}...
+                  </p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                    <span style={{ fontSize: 18, fontWeight: 700, color: '#fa5d00' }}>
+                      {node.variants.edges[0].node.price.amount} €
+                    </span>
+                    <span className="learn-more-text">View →</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   )
 }

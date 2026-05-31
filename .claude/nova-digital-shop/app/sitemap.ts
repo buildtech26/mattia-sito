@@ -1,7 +1,7 @@
 import { shopifyClient, GET_PRODUCTS, GET_COLLECTIONS } from '@/lib/shopify'
 import { MetadataRoute } from 'next'
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://novaflow.shop'
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://novaflowshops.vercel.app'
 
 export const dynamic = 'force-dynamic'
 
